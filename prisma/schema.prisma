@@ -25,4 +25,46 @@ model SiteMetadata {
 model Region {
   id      Int    @id @default(autoincrement())
   name    String @unique
+
+  LearningCenter LearningCenter[]
+}
+
+
+model Admin {
+  id        Int    @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LearningCenter {
+  id          Int    @id @default(autoincrement())
+  name        String
+  email       String        @unique
+  phoneNumber String
+  password    String
+  img         String
+  description String
+  document    String
+  status      LCenterStatus @default(INACTIVE)
+  address     String
+  role        String        @default("LEARNING-CENTER")
+  regionId    Int
+  region      Region       @relation(fields: [regionId], references: [id], onDelete: NoAction)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum LCenterStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
 }
